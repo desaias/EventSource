@@ -39,11 +39,6 @@ Specification:
 
 * http://www.w3.org/TR/eventsource/
 
-Build:
-------
-
-* To build EventSource, just install npm modules (`npm install`) and then run the build (`npm run build`). It should generate a new version of `src/eventsource.min.js`.
-
 Notes:
 -----
  * If you are using HTTP Basic Authentication, you can embed credentials into the URL - `http://username:password@github.com`.
