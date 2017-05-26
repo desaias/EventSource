@@ -242,6 +242,18 @@
       this.xhr.setRequestHeader("Accept", "text/event-stream");
       // Request header field Last-Event-ID is not allowed by Access-Control-Allow-Headers.
       //this.xhr.setRequestHeader("Last-Event-ID", this.lastEventId);
+
+      // add our custom headers
+      var customHeaders = this.thisArg.customHeaders;
+      if(customHeaders && typeof customHeaders === 'object') {
+        var self = this;
+        var keys = Object.keys(customHeaders);
+        keys.forEach(function(key) {
+          if(customHeaders[key]) {
+            self.xhr.setRequestHeader(key, customHeaders[key]);
+          }
+        });
+      }
     }
 
     try {
@@ -427,6 +439,7 @@
     this.url = url.toString();
     this.readyState = CONNECTING;
     this.withCredentials = isCORSSupported && options != undefined && Boolean(options.withCredentials);
+    this.customHeaders = options.headers;
 
     this.es = es;
     this.initialRetry = getDuration(1000, 0);
@@ -667,20 +680,8 @@
     EventSource.prototype.withCredentials = undefined;
   }
 
-  var isEventSourceSupported = function () {
-    // Opera 12 fails this test, but this is fine.
-    return global.EventSource != undefined && ("withCredentials" in global.EventSource.prototype);
-  };
-
-  if (Transport != undefined && (global.EventSource == undefined || (isCORSSupported && !isEventSourceSupported()))) {
-    // Why replace a native EventSource ?
-    // https://bugzilla.mozilla.org/show_bug.cgi?id=444328
-    // https://bugzilla.mozilla.org/show_bug.cgi?id=831392
-    // https://code.google.com/p/chromium/issues/detail?id=260144
-    // https://code.google.com/p/chromium/issues/detail?id=225654
-    // ...
-    global.NativeEventSource = global.EventSource;
-    global.EventSource = EventSource;
-  }
+  // Always replace native EventSource
+  global.NativeEventSource = global.EventSource;
+  global.EventSource = EventSource;
 
 }(typeof window !== 'undefined' ? window : this));
