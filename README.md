@@ -4,17 +4,13 @@ EventSource polyfill - http://www.w3.org/TR/eventsource/
 Installing:
 -----------
 
-You can get the code from npm or bower:
+You can get the code from npm:
 
 ```
-npm install event-source-polyfill
+npm install @containership/event-source-polyfill
 ```
 
-```
-bower install event-source-polyfill
-```
-
-Just include `src/eventsource.js` or `src/eventsource.min.js` in your page to use the polyfill.
+Just include `src/eventsource.js`in your page to use the polyfill.
 
 
 Browser support:
@@ -61,8 +57,6 @@ Other EventSource polyfills:
 
 EXAMPLE
 -------
-
-
 
 server-side (node.js)
 ---------------------
@@ -125,38 +119,7 @@ http.createServer(function (request, response) {
 }).listen(PORT);
 ```
 
-or use PHP (see php/events.php)
--------------------------------
-```php
-<?php
-
-  header("Content-Type: text/event-stream");
-  header("Cache-Control: no-cache");
-  header("Access-Control-Allow-Origin: *");
-
-  $lastEventId = floatval(isset($_SERVER["HTTP_LAST_EVENT_ID"]) ? $_SERVER["HTTP_LAST_EVENT_ID"] : 0);
-  if ($lastEventId == 0) {
-    $lastEventId = floatval(isset($_GET["lastEventId"]) ? $_GET["lastEventId"] : 0);
-  }
-
-  echo ":" . str_repeat(" ", 2048) . "\n"; // 2 kB padding for IE
-  echo "retry: 2000\n";
-
-  // event-stream
-  $i = $lastEventId;
-  $c = $i + 100;
-  while (++$i < $c) {
-    echo "id: " . $i . "\n";
-    echo "data: " . $i . ";\n\n";
-    ob_flush();
-    flush();
-    sleep(1);
-  }
-
-?>
-```
-
-index.html (php/index.html):
+index.html:
 ----------------------------
 ```html
 <!DOCTYPE html>
@@ -167,7 +130,7 @@ index.html (php/index.html):
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <script src="../src/eventsource.js"></script>
     <script>
-      var es = new EventSource("events.php");
+      var es = new EventSource(...);
       var listener = function (event) {
         var div = document.createElement("div");
         var type = event.type;
