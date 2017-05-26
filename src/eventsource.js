@@ -906,16 +906,9 @@
       factory(global);
     }
   })(function (exports) {
+    // Always replace native EventSource
     exports.EventSourcePolyfill = EventSourcePolyfill;
-    exports.NativeEventSource = NativeEventSource;
-    if (XMLHttpRequest != undefined && (NativeEventSource == undefined || !("withCredentials" in NativeEventSource.prototype))) {
-      // Why replace a native EventSource ?
-      // https://bugzilla.mozilla.org/show_bug.cgi?id=444328
-      // https://bugzilla.mozilla.org/show_bug.cgi?id=831392
-      // https://code.google.com/p/chromium/issues/detail?id=260144
-      // https://code.google.com/p/chromium/issues/detail?id=225654
-      // ...
-      exports.EventSource = EventSourcePolyfill;
-    }
+    exports.NativeEventSource = EventSourcePolyfill;
+    exports.EventSource = EventSourcePolyfill;
   });
 }(typeof window !== 'undefined' ? window : this));
