@@ -72,16 +72,6 @@ Notes:
 -----
  * If you are using HTTP Basic Authentication, you can embed credentials into the URL - `http://username:password@github.com`.
  * Because of the additional features added in this fork, it ALWAYS uses the polyfill, even when EventSource is supported in the browser
- * This fork adds support for custom headers in the event object, allowing you to define an Authorization header
-
-``` javascript
-var eventSource = new EventSource(path, {
-    withCredentials: true,
-    headers: {
-        Authorization: 'Bearer asdff...'
-    }
-})
-```
 
 Custom Headers:
 ---------------
