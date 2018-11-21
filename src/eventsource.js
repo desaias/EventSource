@@ -619,7 +619,6 @@
     this.withCredentials = undefined;
 
     this._close = undefined;
-
     start(this, url, options);
   }
 
@@ -894,21 +893,7 @@
   EventSourcePolyfill.CLOSED = CLOSED;
   EventSourcePolyfill.prototype.withCredentials = undefined;
 
-  (function (factory) {
-    if (typeof module === "object" && typeof module.exports === "object") {
-      var v = factory(exports);
-      if (v !== undefined) module.exports = v;
-    }
-    else if (typeof define === "function" && define.amd) {
-      define(["exports"], factory);
-    }
-    else {
-      factory(global);
-    }
-  })(function (exports) {
-    // Always replace native EventSource
-    exports.EventSourcePolyfill = EventSourcePolyfill;
-    exports.NativeEventSource = EventSourcePolyfill;
-    exports.EventSource = EventSourcePolyfill;
-  });
+  // Always replace native EventSource
+  global.NativeEventSource = global.EventSource;
+  global.EventSource = EventSourcePolyfill;
 }(typeof window !== 'undefined' ? window : this));
